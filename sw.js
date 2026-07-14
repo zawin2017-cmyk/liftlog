@@ -1,4 +1,4 @@
-const C = 'liftlog-v2';
+const C = 'liftlog-v4';
 self.addEventListener('install', e => {
   self.skipWaiting();
   e.waitUntil(caches.open(C).then(c => c.addAll(['./', './index.html', './icon-180.png'])));
@@ -15,7 +15,7 @@ self.addEventListener('fetch', e => {
     try {
       const ctrl = new AbortController();
       const t = setTimeout(() => ctrl.abort(), 4000);
-      const res = await fetch(e.request, { signal: ctrl.signal });
+      const res = await fetch(e.request, { signal: ctrl.signal, cache: 'no-cache' });
       clearTimeout(t);
       if (res.ok && new URL(e.request.url).origin === location.origin) {
         const cache = await caches.open(C);
