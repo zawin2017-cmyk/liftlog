@@ -458,53 +458,53 @@ function barChart(rows,color,opts){
  return '<svg class="chart" viewBox="0 0 '+W+' '+H+'">'+g+bars+xl+'</svg>';}
 function legend(items){return '<div class="legend">'+items.map(i=>'<span><span class="ldot" style="background:'+i.c+'"></span>'+esc(i.n)+'</span>').join('')+'</div>';}
 /* ============ anatomy ============ */
-const NEUTRAL='rgba(14,20,48,.06)';
 function heat(count,max){
- if(!count)return NEUTRAL;
+ if(!count)return 'rgba(255,255,255,.5)';
  const r=count/max;
  return r<=0.25?HEAT[0]:r<=0.5?HEAT[1]:r<=0.78?HEAT[2]:HEAT[3];}
-function bodyPart(sh,fill,tip){
- const t=tip?' data-tip="'+encodeURIComponent(tip)+'"':'';
- const st=fill===NEUTRAL?'':' stroke="#ffffff" stroke-width="1.4"';
- if(sh.k==='e')return '<ellipse cx="'+sh.x+'" cy="'+sh.y+'" rx="'+sh.rx+'" ry="'+sh.ry+'" fill="'+fill+'"'+st+t+'/>';
- if(sh.k==='r')return '<rect x="'+sh.x+'" y="'+sh.y+'" width="'+sh.w+'" height="'+sh.h+'" rx="'+sh.rx+'" fill="'+fill+'"'+st+t+'/>';
- return '<path d="'+sh.d+'" fill="'+fill+'"'+st+t+'/>';}
-const FRONT=[
- {g:null,s:{k:'e',x:60,y:16,rx:8.5,ry:9}},{g:null,s:{k:'r',x:55,y:24,w:10,h:9,rx:3}},
- {g:'Schouders',s:{k:'e',x:37,y:50,rx:9.5,ry:10.5}},{g:'Schouders',s:{k:'e',x:83,y:50,rx:9.5,ry:10.5}},
- {g:'Borst',s:{k:'e',x:51,y:61,rx:9,ry:11.5}},{g:'Borst',s:{k:'e',x:69,y:61,rx:9,ry:11.5}},
- {g:'Core',s:{k:'r',x:53,y:75,w:14,h:41,rx:6}},
- {g:'Biceps',s:{k:'e',x:33,y:80,rx:6,ry:12.5}},{g:'Biceps',s:{k:'e',x:87,y:80,rx:6,ry:12.5}},
- {g:null,s:{k:'e',x:29.5,y:112,rx:5,ry:15}},{g:null,s:{k:'e',x:90.5,y:112,rx:5,ry:15}},
- {g:null,s:{k:'e',x:28,y:132,rx:3.8,ry:3.8}},{g:null,s:{k:'e',x:92,y:132,rx:3.8,ry:3.8}},
- {g:null,s:{k:'r',x:48,y:117,w:24,h:11,rx:5}},
- {g:'Quadriceps',s:{k:'e',x:47,y:155,rx:9,ry:26}},{g:'Quadriceps',s:{k:'e',x:73,y:155,rx:9,ry:26}},
- {g:'Adductoren',s:{k:'e',x:56.5,y:148,rx:3.5,ry:17}},{g:'Adductoren',s:{k:'e',x:63.5,y:148,rx:3.5,ry:17}},
- {g:null,s:{k:'e',x:47,y:208,rx:6,ry:19}},{g:null,s:{k:'e',x:73,y:208,rx:6,ry:19}},
- {g:null,s:{k:'e',x:45,y:231,rx:5,ry:3.5}},{g:null,s:{k:'e',x:75,y:231,rx:5,ry:3.5}}
+const SIL='M 59.5 27 L 63.8 27.5 C 64.3 32, 64.8 36, 66.5 38.5 C 71.5 40.5, 78 42, 82 45.5 C 87.5 49, 90 53, 90.5 57.5 C 92 64, 92.8 74, 93.6 84 C 94.5 93, 95.8 102, 96.8 110 C 97.8 115, 98.2 120, 96.6 124 C 94.5 127.5, 91.5 126.5, 90.5 122.5 C 89.5 117, 89 112, 88.6 108 C 87.2 100, 86 92, 84.6 84 C 83 76, 79.5 68, 77.2 61 C 75.6 64, 74.5 70, 74 76 C 73 84, 71.8 90, 71.5 96 C 71.3 103, 72.8 108, 73.6 114 C 74.1 120, 73.7 126, 72.9 132 C 73.5 142, 73 152, 71.3 162 C 70.4 170, 69.5 176, 69 180 C 70 186, 71.5 192, 71.5 198 C 71.5 206, 69.5 214, 68 220 C 67.5 224, 67.5 227, 68.5 229 C 71 231.5, 72 233, 70 234.5 L 63 234.5 C 61.5 233, 62 230, 62.5 227 C 63 220, 62 212, 61.5 204 C 61 196, 62 188, 62.5 182 C 62.5 177, 61.5 172, 61.5 166 C 61 156, 60.5 146, 60.5 138 C 60.3 134, 60 131, 59.8 128.5 L 59.5 128.5 Z';
+const F_MUS=[
+ {g:'Borst',d:'M 60.3 48.5 C 66 47.5, 72 47.5, 76 50 C 79 52, 79.5 56.5, 78.5 60 C 77 66.5, 71 70, 65.5 70.5 C 62.5 70.8, 60.3 69.5, 60.3 66 Z'},
+ {g:'Schouders',d:'M 77.5 47 C 82 46.5, 86.5 49.5, 87.8 55 C 88.3 59, 87 62.5, 84.5 63.5 C 81.5 64.3, 79 62, 78.3 58.5 C 77.6 55, 76.8 50.5, 77.5 47 Z'},
+ {g:'Rug',d:'M 65.5 38.8 C 70 40, 76 41.5, 80.5 45.2 C 75 46.6, 68.5 45.6, 65 42.6 Z'},
+ {g:'Biceps',d:'M 78.5 63.5 C 81.5 63, 84 66, 85 71 C 86 76.5, 85.5 81, 84 83.5 C 82 86.5, 79.5 85, 78.8 81 C 78 76, 77.5 68.5, 78.5 63.5 Z'},
+ {g:'Core',r:[54,74.5,12,10,3],mir:false},
+ {g:'Core',r:[54,86,12,10,3],mir:false},
+ {g:'Core',r:[54.5,97.5,11,10,3],mir:false},
+ {g:'Core',r:[55,109,10,12,4],mir:false},
+ {g:'Core',d:'M 68 76.5 C 70.5 80, 71.6 86, 71.4 93 C 71.2 100, 70 106.5, 68.2 110.5 C 67.2 106, 66.8 98, 66.9 89 C 67 84, 67.3 79.5, 68 76.5 Z'},
+ {g:'Quadriceps',d:'M 66.3 128 C 69.5 126.5, 72 127.5, 72.6 132.5 C 73.6 144, 73 157, 71 166 C 69.8 170, 67.5 170.5, 66.2 166.5 C 64.7 157, 64.6 139, 66.3 128 Z'},
+ {g:'Quadriceps',d:'M 72.7 129.5 C 74.2 133, 74.9 142, 74.7 151 C 74.5 159.5, 73 166.5, 71.6 169 C 70.8 165, 71.2 155, 71.4 147 C 71.6 140, 72 134, 72.7 129.5 Z'},
+ {g:'Quadriceps',d:'M 63 158 C 64.8 155.5, 66.5 157, 67 161 C 67.5 165.5, 66.5 169.5, 64.8 170.5 C 63 171.2, 61.8 169, 61.9 165.5 C 62 162.5, 62.3 160, 63 158 Z'},
+ {g:'Adductoren',d:'M 61.4 128.5 C 63.8 130, 65.2 134, 65.5 139.5 C 65.8 145.5, 65 151, 63.7 154.5 C 62.4 150.5, 61.5 143, 61.2 136 C 61.1 133, 61.1 130.5, 61.4 128.5 Z'}
 ];
-const BACK=[
- {g:null,s:{k:'e',x:60,y:16,rx:8.5,ry:9}},{g:null,s:{k:'r',x:55,y:24,w:10,h:9,rx:3}},
- {g:'Rug',s:{k:'p',d:'M60 31 Q49 41 44.5 49 Q55 55 60 55 Q65 55 75.5 49 Q71 41 60 31 Z'}},
- {g:'Schouders',s:{k:'e',x:37,y:50,rx:9.5,ry:10.5}},{g:'Schouders',s:{k:'e',x:83,y:50,rx:9.5,ry:10.5}},
- {g:'Rug',s:{k:'p',d:'M44 56 Q60 63 76 56 L71 97 Q60 103 49 97 Z'}},
- {g:'Rug',s:{k:'r',x:54,y:100,w:12,h:13,rx:4}},
- {g:'Triceps',s:{k:'e',x:33,y:80,rx:6,ry:12.5}},{g:'Triceps',s:{k:'e',x:87,y:80,rx:6,ry:12.5}},
- {g:null,s:{k:'e',x:29.5,y:112,rx:5,ry:15}},{g:null,s:{k:'e',x:90.5,y:112,rx:5,ry:15}},
- {g:null,s:{k:'e',x:28,y:132,rx:3.8,ry:3.8}},{g:null,s:{k:'e',x:92,y:132,rx:3.8,ry:3.8}},
- {g:'Glutes',s:{k:'e',x:52,y:120,rx:8.5,ry:10}},{g:'Glutes',s:{k:'e',x:68,y:120,rx:8.5,ry:10}},
- {g:'Hamstrings',s:{k:'e',x:47.5,y:159,rx:9,ry:24}},{g:'Hamstrings',s:{k:'e',x:72.5,y:159,rx:9,ry:24}},
- {g:'Kuiten',s:{k:'e',x:47.5,y:207,rx:6.5,ry:17}},{g:'Kuiten',s:{k:'e',x:72.5,y:207,rx:6.5,ry:17}},
- {g:null,s:{k:'e',x:45,y:231,rx:5,ry:3.5}},{g:null,s:{k:'e',x:75,y:231,rx:5,ry:3.5}}
+const B_MUS=[
+ {g:'Rug',mir:false,d:'M 60 33 C 65 36, 71 40, 76.5 44.5 C 70.5 48, 65 52, 62.5 60 C 61.3 66, 60.7 73, 60 80 C 59.3 73, 58.7 66, 57.5 60 C 55 52, 49.5 48, 43.5 44.5 C 49 40, 55 36, 60 33 Z'},
+ {g:'Schouders',d:'M 77.5 47 C 82 46.5, 86.5 49.5, 87.8 55 C 88.3 59, 87 62.5, 84.5 63.5 C 81.5 64.3, 79 62, 78.3 58.5 C 77.6 55, 76.8 50.5, 77.5 47 Z'},
+ {g:'Rug',d:'M 76 58 C 78 62, 78 68, 76 74 C 73 82, 68 89, 63.5 93 C 62 94.2, 61 93.5, 61 91 L 61 68 C 61 64, 63 62.5, 66 61.5 C 70 60.2, 73.5 59, 76 58 Z'},
+ {g:'Rug',r:[56.5,95,3.2,19,1.6],mir:false},
+ {g:'Rug',r:[60.3,95,3.2,19,1.6],mir:false},
+ {g:'Triceps',d:'M 78.5 62.5 C 82.5 62, 85.5 65.5, 86.3 71.5 C 87 77, 86 82, 84.3 84.5 C 82.3 87, 80 85.5, 79.2 81.5 C 78.2 75.5, 77.8 68, 78.5 62.5 Z'},
+ {g:'Glutes',d:'M 60.4 116 C 66 114.5, 72 116.5, 74.5 121.5 C 76.5 126, 75.5 132.5, 71.5 136 C 67.5 139.5, 62 139, 60.4 136.5 Z'},
+ {g:'Hamstrings',d:'M 68.5 142 C 71.5 141, 73.5 144, 74 150 C 74.6 158, 73.8 168, 71.8 175 C 70.6 178.5, 68.8 178, 68.2 174 C 67.4 164, 67.4 150, 68.5 142 Z'},
+ {g:'Hamstrings',d:'M 62 142 C 64.5 141, 66.3 143.5, 66.6 149 C 67 157, 66.4 167, 64.8 174 C 63.8 177.5, 62.2 177, 61.8 173 C 61.2 163, 61.2 150, 62 142 Z'},
+ {g:'Kuiten',d:'M 68.3 184 C 70.8 183, 72.6 186, 72.9 191.5 C 73.2 197, 72.2 203.5, 70.6 207 C 69.3 209.5, 67.9 208, 67.7 203.5 C 67.4 196.5, 67.5 188.5, 68.3 184 Z'},
+ {g:'Kuiten',d:'M 62.4 184 C 64.7 183, 66.3 185.5, 66.5 190.5 C 66.7 196, 66 203, 64.6 206.5 C 63.4 209, 62.2 207.5, 62 203 C 61.8 196, 61.9 188.5, 62.4 184 Z'}
 ];
+function muscleShape(m,fill,tip){
+ const core=m.r?'<rect x="'+m.r[0]+'" y="'+m.r[1]+'" width="'+m.r[2]+'" height="'+m.r[3]+'" rx="'+m.r[4]+'"':'<path d="'+m.d+'"';
+ return core+' fill="'+fill+'" stroke="#fff" stroke-width="1.2" data-tip="'+tip+'"/>';}
+function anatomyFig(mus,label,counts,max){
+ const half='<path d="'+SIL+'"/>';
+ let s='<g fill="#3A4266" opacity=".14">'+half+'<g transform="translate(120,0) scale(-1,1)">'+half+'</g>'+
+  '<rect x="55.5" y="20" width="9" height="12" rx="2.5"/><ellipse cx="60" cy="17" rx="9.5" ry="11"/></g>';
+ mus.forEach(m=>{const fill=heat(counts[m.g]||0,max);
+  const tip=encodeURIComponent(m.g+' · '+(counts[m.g]||0)+' sets in 4 wk');
+  s+=muscleShape(m,fill,tip);
+  if(m.mir!==false&&!m.r)s+='<g transform="translate(120,0) scale(-1,1)">'+muscleShape(m,fill,tip)+'</g>';});
+ return '<figure><svg viewBox="20 0 80 240">'+s+'</svg><figcaption>'+label+'</figcaption></figure>';}
 function anatomySvg(counts,max){
- const fig=(parts,label)=>{
-  let inner='';parts.forEach(p=>{
-   const fill=p.g?heat(counts[p.g]||0,max):NEUTRAL;
-   const tip=p.g?p.g+' · '+(counts[p.g]||0)+' sets in 4 wk':null;
-   inner+=bodyPart(p.s,fill,tip);});
-  return '<figure><svg viewBox="10 2 100 236">'+inner+'</svg><figcaption>'+label+'</figcaption></figure>';};
- return '<div class="anat">'+fig(FRONT,'Voor')+fig(BACK,'Achter')+'</div>';}
+ return '<div class="anat">'+anatomyFig(F_MUS,'Voor',counts,max)+anatomyFig(B_MUS,'Achter',counts,max)+'</div>';}
 /* ============ ui state ============ */
 let ui={tab:'home',screen:null,tplEditId:null,progressEx:null,pickerCtx:null,pickerSearch:'',histAll:false,exSearch:'',pendingConfirm:null,importKind:null,importRows:null,timer:null};
 const $=s=>document.querySelector(s);
