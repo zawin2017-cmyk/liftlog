@@ -282,31 +282,32 @@ const I={
 /* ============ seed & migrate ============ */
 function seedDB(){
  const E={
-  'hs-incline':['HS Incline Press','','Borst'],'tri-pulldown':['Triceps Pulldown','Pin 19','Triceps'],
+  'hs-incline':['HS Incline Press','','Borst',['Triceps','Schouders']],'tri-pulldown':['Triceps Pulldown','Pin 19','Triceps'],
   'tri-overhead':['Overhead Triceps Extension','Pin 13','Triceps'],'lat-raise':['Lateral Raise (machine)','','Schouders'],
   'pec-deck':['Pec Deck','','Borst'],'leg-ext':['Leg Extension','Rugpin 4','Quadriceps'],
-  'hammer-curl':['Hammer Curls','','Biceps'],'inc-db-curl':['Incline DB Curls','','Biceps'],
-  'lying-ham':['Lying Hamstring Curl','','Hamstrings'],'lat-pulldown':['Lat Pulldown','','Lats'],
-  'row-0':['0° Row','Pin 2','Upper back'],'glute-bridge':['Glute Bridge (machine)','','Glutes'],
-  'uni-latpd':['Uni Lat Pulldown','Hoogste stand','Lats'],'bicep-mach':['Biceps Machine','Pin 2','Biceps'],
-  'ab-crunch':['Ab Crunch Machine','Pin 4','Core'],'back-ext':['Back Extensions','','Lower back'],
-  'calve-raise':['Calf Raise','','Kuiten'],'hack-squat':['Hack Squat','','Quadriceps'],
+  'hammer-curl':['Hammer Curls','','Biceps',['Onderarmen']],'inc-db-curl':['Incline DB Curls','','Biceps'],
+  'lying-ham':['Lying Hamstring Curl','','Hamstrings'],'lat-pulldown':['Lat Pulldown','','Lats',['Biceps','Upper back']],
+  'row-0':['0° Row','Pin 2','Upper back',['Lats','Biceps']],'glute-bridge':['Glute Bridge (machine)','','Glutes',['Hamstrings']],
+  'uni-latpd':['Uni Lat Pulldown','Hoogste stand','Lats',['Biceps','Borst']],'bicep-mach':['Biceps Machine','Pin 2','Biceps'],
+  'ab-crunch':['Ab Crunch Machine','Pin 4','Core'],'back-ext':['Back Extensions','','Lower back',['Hamstrings','Glutes']],
+  'calve-raise':['Calf Raise','','Kuiten'],'hack-squat':['Hack Squat','','Quadriceps',['Glutes']],
   'ham-curl':['Hamstring Curl (zittend)','','Hamstrings'],'abduction':['Abduction Machine','','Glutes'],
-  'adduction':['Adduction Machine','','Adductoren'],'db-rdl':['DB RDL','','Hamstrings'],
-  'inc-chest-press':['Incline Chest Press','Stoel 6','Borst'],'inc-press-p6':['Incline Press (pin 6)','Pin 6','Borst'],
-  'frontal-pd':['Frontal Pulldown','Pad laagste','Lats'],'wide-frontal-pd':['Wide Frontal Pulldown','','Lats'],
-  'sagittal-pd':['Sagittal Pulldown','','Lats'],'ez-tri-overhead':['EZ Bar Triceps Overhead Pulldown','11','Triceps'],
+  'adduction':['Adduction Machine','','Adductoren'],'db-rdl':['DB RDL','','Hamstrings',['Lower back','Glutes']],
+  'inc-chest-press':['Incline Chest Press','Stoel 6','Borst',['Triceps','Schouders']],'inc-press-p6':['Incline Press (pin 6)','Pin 6','Borst',['Triceps','Schouders']],
+  'frontal-pd':['Frontal Pulldown','Pad laagste','Lats',['Biceps']],'wide-frontal-pd':['Wide Frontal Pulldown','','Lats',['Biceps','Upper back']],
+  'sagittal-pd':['Sagittal Pulldown','','Lats',['Biceps']],'ez-tri-overhead':['EZ Bar Triceps Overhead Pulldown','11','Triceps'],
   'uni-tri':['Uni Triceps Extension','15','Triceps'],'uni-calve':['Uni Calf Press','','Kuiten'],
-  'sissy':['Sissy Squat','','Quadriceps'],'db-chest-row':['DB Chest Row','','Upper back'],
-  'bench':['Bench Press','','Borst'],'squat':['Squat','','Quadriceps'],'deadlift':['Deadlift','','Hamstrings'],
-  'bb-rdl':['Barbell RDL','','Hamstrings'],'hip-thrust':['Hip Thrust','','Glutes'],'bss':['Bulgarian Split Squat','','Quadriceps'],
-  'leg-press':['Leg Press','','Quadriceps'],'seated-calf':['Seated Calf Raise','','Kuiten'],'pull-up':['Pull-up','','Lats'],
-  'dips':['Dips','','Triceps'],'cable-row':['Cable Row','','Upper back'],'face-pull':['Face Pull','','Schouders'],
-  'rear-delt':['Rear Delt Fly','','Schouders'],'db-shoulder':['DB Shoulder Press','','Schouders'],
+  'sissy':['Sissy Squat','','Quadriceps'],'db-chest-row':['DB Chest Row','','Upper back',['Lats','Biceps']],
+  'bench':['Bench Press','','Borst',['Triceps','Schouders']],'squat':['Squat','','Quadriceps',['Glutes','Adductoren']],'deadlift':['Deadlift','','Hamstrings',['Lower back','Glutes']],
+  'bb-rdl':['Barbell RDL','','Hamstrings'],'hip-thrust':['Hip Thrust','','Glutes',['Hamstrings']],'bss':['Bulgarian Split Squat','','Quadriceps',['Glutes']],
+  'leg-press':['Leg Press','','Quadriceps',['Glutes','Hamstrings']],'seated-calf':['Seated Calf Raise','','Kuiten'],'pull-up':['Pull-up','','Lats',['Biceps','Upper back']],
+  'dips':['Dips','','Triceps',['Borst','Schouders']],'cable-row':['Cable Row','','Upper back',['Lats','Biceps']],'face-pull':['Face Pull','','Schouders',['Upper back','Traps']],
+  'rear-delt':['Rear Delt Fly','','Schouders',['Upper back']],'db-shoulder':['DB Shoulder Press','','Schouders'],
   'cable-lat':['Cable Lateral Raise','','Schouders'],'preacher':['Preacher Curl','','Biceps'],
-  'skull':['Skullcrusher','','Triceps'],'cable-fly':['Cable Fly','','Borst'],'forearm-curl':['Forearm Curl','','Onderarmen'],'shrugs':['Shrugs','','Traps']
+  'skull':['Skullcrusher','','Triceps'],'cable-fly':['Cable Fly','','Borst',['Schouders']],'forearm-curl':['Forearm Curl','','Onderarmen'],'shrugs':['Shrugs','','Traps'],
+  'tbar-row':['T-Bar Row','','Upper back',['Lats','Biceps']]
  };
- const exercises={};for(const id in E)exercises[id]={name:E[id][0],setting:E[id][1],group:E[id][2]};
+ const exercises={};for(const id in E)exercises[id]={name:E[id][0],setting:E[id][1],group:E[id][2],secondary:E[id][3]||[]};
  const S=a=>a.map(x=>({w:x[0],r:x[1],p:x[2]||0,done:true}));
  const en=(ex,sets,note)=>({ex,sets,note:note||''});
  const sessions=[];
@@ -315,7 +316,7 @@ function seedDB(){
   {id:'posterior',name:'Posterior',grad:'post',exIds:['ham-curl','db-rdl','frontal-pd','wide-frontal-pd','sagittal-pd','inc-db-curl','db-chest-row']},
   {id:'legs',name:'Legs',grad:'legs',exIds:['calve-raise','hack-squat','lying-ham','ham-curl','abduction','leg-ext','ab-crunch']}
  ];
- return {v:4,seq:100,exercises,templates,sessions,active:null,body:[],cardio:[],flags:{}};
+ return {v:5,seq:100,exercises,templates,sessions,active:null,body:[],cardio:[],flags:{}};
 }
 function migrate(d){
  if(d.v<2){
@@ -336,9 +337,13 @@ function migrate(d){
   }
   if(d.exercises&&!d.exercises['shrugs'])d.exercises['shrugs']={name:'Shrugs',setting:'',group:'Traps'};
  }
+ if(d.v<5){
+  for(const id in (d.exercises||{}))if(!Array.isArray(d.exercises[id].secondary))d.exercises[id].secondary=[];
+  if(d.exercises&&!d.exercises['tbar-row'])d.exercises['tbar-row']={name:'T-Bar Row',setting:'',group:'Upper back',secondary:['Lats','Biceps']};
+ }
  for(const id in (d.exercises||{}))if(!GROUPS.includes(d.exercises[id].group))d.exercises[id].group='Overig';
  d.cardio=d.cardio||[];
- d.v=4;
+ d.v=5;
  return d;
 }
 /* ============ storage ============ */
@@ -424,9 +429,12 @@ function trendWeights(){const arr=[...db.body].filter(b=>b.w!=null).sort((a,b)=>
 function muscleCounts(days){
  const cutoff=pD(todayISO());cutoff.setDate(cutoff.getDate()-(days-1));
  const counts={};
+ const add=(g,v)=>{if(!g)return;counts[g]=(counts[g]||0)+v;};
  for(const ss of db.sessions){if(pD(ss.date)<cutoff)continue;
-  for(const en of ss.entries){const g=(db.exercises[en.ex]||{}).group||'Overig';
-   const n=en.sets.filter(s=>s.r>0).length;if(n)counts[g]=(counts[g]||0)+n;}}
+  for(const en of ss.entries){const ex=db.exercises[en.ex]||{};
+   const n=en.sets.filter(s=>s.r>0).length;if(!n)continue;
+   add(ex.group||'Overig',n);
+   (ex.secondary||[]).forEach(g=>{if(g!==ex.group)add(g,n*0.5)});}}
  return counts;}
 /* ============ charts ============ */
 const AXIS='rgba(14,20,48,.45)';
@@ -535,7 +543,7 @@ function anatomyFig(mus,label,counts,max){
  let s='<g fill="#3A4266" opacity=".14">'+half+'<g transform="translate(120,0) scale(-1,1)">'+half+'</g>'+
   '<rect x="55.5" y="20" width="9" height="12" rx="2.5"/><ellipse cx="60" cy="17" rx="9.5" ry="11"/></g>';
  mus.forEach(m=>{const fill=heat(counts[m.g]||0,max);
-  const tip=encodeURIComponent(m.g+' · '+(counts[m.g]||0)+' sets in 4 wk');
+  const tip=encodeURIComponent(m.g+' · '+nf1.format(counts[m.g]||0)+' sets in 4 wk');
   s+=muscleShape(m,fill,tip);
   if(m.mir!==false&&!m.r)s+='<g transform="translate(120,0) scale(-1,1)">'+muscleShape(m,fill,tip)+'</g>';});
  return '<figure><svg viewBox="20 0 80 240">'+s+'</svg><figcaption>'+label+'</figcaption></figure>';}
@@ -738,8 +746,8 @@ function vProgress(){
  h+='<div class="card"><div class="row"><b style="font-size:16px" class="grow">Spiergroepen</b><span class="chip set">laatste 4 weken</span></div>';
  if(max){
   h+=anatomySvg(counts,max);
-  h+='<div class="row" style="margin-top:12px;gap:8px"><span class="mono dim" style="font-size:9.5px">0</span><div class="heatbar"></div><span class="mono dim" style="font-size:9.5px">'+max+' sets</span></div>';
-  h+='<div style="margin-top:10px">'+entries.map(([g,n])=>'<div class="srow" style="padding:5px 0"><span style="font-size:13px;font-weight:600;width:96px;flex:none">'+esc(g)+'</span><div class="grow"><div class="grow-bar" style="width:'+Math.round(n/max*100)+'%"></div></div><span class="mono num dim" style="font-size:11.5px">'+n+' sets</span></div>').join('')+'</div>';
+  h+='<div class="row" style="margin-top:12px;gap:8px"><span class="mono dim" style="font-size:9.5px">0</span><div class="heatbar"></div><span class="mono dim" style="font-size:9.5px">'+nf1.format(max)+' sets</span></div>';
+  h+='<div style="margin-top:10px">'+entries.map(([g,n])=>'<div class="srow" style="padding:5px 0"><span style="font-size:13px;font-weight:600;width:96px;flex:none">'+esc(g)+'</span><div class="grow"><div class="grow-bar" style="width:'+Math.round(n/max*100)+'%"></div></div><span class="mono num dim" style="font-size:11.5px">'+nf1.format(n)+' sets</span></div>').join('')+'</div>';
  } else h+='<div class="empty">Nog geen sets in de laatste 4 weken. Start een workout en dit vult zich vanzelf.</div>';
  h+='</div>';
  /* weekly volume */
@@ -864,7 +872,8 @@ function vMore(){
  const exs=Object.entries(db.exercises).filter(([id,e])=>!ui.exSearch||e.name.toLowerCase().includes(ui.exSearch.toLowerCase())).sort((a,b)=>a[1].name.localeCompare(b[1].name));
  h+='<h2>Oefeningen <span class="mini">'+Object.keys(db.exercises).length+'</span></h2><div class="card">'+
   '<input class="in" type="text" placeholder="Zoek oefening..." value="'+esc(ui.exSearch)+'" data-in="exsearch" style="text-align:left;padding:10px 13px;font-weight:500;margin-bottom:6px">'+
-  '<div style="max-height:300px;overflow-y:auto">'+exs.map(([id,e])=>'<div class="listrow" data-a="editEx" data-id="'+id+'"><div class="grow"><b style="font-size:13.5px">'+esc(e.name)+'</b><div class="dim" style="font-size:11px">'+esc(e.group)+(e.setting?' · '+esc(e.setting):'')+'</div></div>'+(e.setting?'<span class="setting">'+esc(e.setting)+'</span>':'')+'</div>').join('')+'</div></div>';
+  '<div style="max-height:300px;overflow-y:auto">'+exs.map(([id,e])=>'<div class="listrow" data-a="editEx" data-id="'+id+'"><div class="grow"><b style="font-size:13.5px">'+esc(e.name)+'</b><div class="dim" style="font-size:11px">'+esc(e.group)+(e.setting?' · '+esc(e.setting):'')+'</div></div>'+(e.setting?'<span class="setting">'+esc(e.setting)+'</span>':'')+'</div>').join('')+'</div>'+
+  '<button class="btn ghost wide" style="margin-top:10px" data-a="exNew">+ Nieuwe oefening</button></div>';
  /* body & food */
  const recent=[...db.body].sort((a,b)=>a.d<b.d?1:-1).slice(0,5);
  h+='<h2>Lichaam &amp; voeding</h2><div class="card">'+
@@ -877,7 +886,7 @@ function vMore(){
   '<div class="row"><button class="btn wide" data-a="exportOpen">Backup maken</button><button class="btn wide" data-a="backupImportOpen">Backup terugzetten</button></div>'+
   '<div class="dim" style="font-size:12px;margin-top:10px;line-height:1.5">Alles staat lokaal op dit toestel ('+sz+' kB). Er is geen cloud-sync: maak af en toe een backup, en gebruik de app steeds vanaf hetzelfde toestel (je beginscherm-app).</div>'+
   '<button class="btn danger wide" style="margin-top:12px" data-a="wipe">Alles wissen</button></div>';
- h+='<h2>Over</h2><div class="card"><div class="soft" style="font-size:13px;line-height:1.6">Liftlog v5 · gebouwd voor jouw A/P-split, gericht op hypertrofie.<br>Notatie: reps × gewicht in kg, P = partials (tellen half mee in volume).<br>Gemaakt met ❤️ door Zawin.<br>De score per sessie vergelijkt je volume per oefening met je gemiddelde van de laatste 3 keer. PR’s zijn nieuwe records in top gewicht of sessievolume. De streak telt weken op rij met minstens één training (kracht of cardio).<br><br>Updates: vraag Claude om een aanpassing; dezelfde link op je beginscherm krijgt automatisch de nieuwe versie bij het openen.</div></div>';
+ h+='<h2>Over</h2><div class="card"><div class="soft" style="font-size:13px;line-height:1.6">Liftlog 5.0 · gebouwd voor jouw A/P-split, gericht op hypertrofie.<br>Notatie: reps × gewicht in kg, P = partials (tellen half mee in volume).<br>Gemaakt met &lt;3 door Zawin.<br>De score per sessie vergelijkt je volume per oefening met je gemiddelde van de laatste 3 keer. PR’s zijn nieuwe records in top gewicht of sessievolume. De streak telt weken op rij met minstens één training (kracht of cardio).<br><br>Updates: vraag Claude om een aanpassing; dezelfde link op je beginscherm krijgt automatisch de nieuwe versie bij het openen.</div></div>';
  return h;}
 /* ============ template edit ============ */
 function vTplEdit(){
@@ -920,6 +929,7 @@ function openExEditor(exId){
   '<div class="field"><label>Naam</label><input type="text" value="'+esc(e.name)+'" data-in="exname" data-id="'+exId+'"></div>'+
   '<div class="field"><label>Stand / instelling (pin, stoel, hoek)</label><input type="text" value="'+esc(e.setting)+'" placeholder="bijv. Pin 19, stoel 6" data-in="exsetting" data-id="'+exId+'"></div>'+
   '<div class="field"><label>Spiergroep</label><select data-in="exgroup" data-id="'+exId+'">'+GROUPS.map(g=>'<option '+(e.group===g?'selected':'')+'>'+g+'</option>').join('')+'</select></div>'+
+  '<div class="field"><label>Secundaire spiergroepen (tellen 0,5×)</label><div class="row" style="flex-wrap:wrap;gap:6px">'+GROUPS.filter(g=>g!==e.group&&g!=='Overig').map(g=>'<button class="chip click '+((e.secondary||[]).includes(g)?'sel':'')+'" type="button" data-a="toggleSecondary" data-id="'+exId+'" data-group="'+esc(g)+'">'+esc(g)+'</button>').join('')+'</div></div>'+
   (!used?'<button class="btn danger wide" style="margin-top:14px" data-a="exDelete" data-id="'+exId+'">Verwijder oefening</button>':'')+
   '<button class="btn acc wide" style="margin-top:10px" data-a="exEditorDone">Klaar</button>');}
 /* ============ body & import ============ */
@@ -996,7 +1006,12 @@ document.addEventListener('click',ev=>{
   case 'addExPicker':openPicker(el.dataset.ctx);break;
   case 'pickEx':addExToCtx(id);break;
   case 'pickerNew':{const name=ui.pickerSearch.trim();if(!name)break;
-   const nid=uid('x');db.exercises[nid]={name,setting:'',group:'Overig'};save();addExToCtx(nid);toast('Oefening aangemaakt');break;}
+   const nid=uid('x');db.exercises[nid]={name,setting:'',group:'Overig',secondary:[]};save();addExToCtx(nid);toast('Oefening aangemaakt');break;}
+  case 'exNew':{const nid=uid('x');db.exercises[nid]={name:'Nieuwe oefening',setting:'',group:'Overig',secondary:[]};save();openExEditor(nid);break;}
+  case 'toggleSecondary':{const e=db.exercises[id];if(!e)break;const group=el.dataset.group;
+   e.secondary=e.secondary||[];const i=e.secondary.indexOf(group);
+   if(i>=0)e.secondary.splice(i,1);else e.secondary.push(group);
+   save();openExEditor(id);break;}
   case 'editEx':openExEditor(id);break;
   case 'exDelete':confirmBox('Oefening verwijderen','Deze oefening wordt definitief verwijderd.','Verwijder',()=>{delete db.exercises[id];save();closeModal();render();},true);break;
   case 'exEditorDone':closeModal();render();break;
@@ -1085,7 +1100,7 @@ document.addEventListener('input',ev=>{
 });
 document.addEventListener('change',ev=>{
  const el=ev.target.closest('select[data-in=exgroup]');if(!el)return;
- const e=db.exercises[el.dataset.id];if(e){e.group=el.value;save();}});
+ const e=db.exercises[el.dataset.id];if(e){e.group=el.value;e.secondary=(e.secondary||[]).filter(g=>g!==e.group);save();openExEditor(el.dataset.id);}});
 /* ============ head / pwa ============ */
 (function(){
  const mk=(n,c)=>{let m=document.querySelector('meta[name="'+n+'"]');if(!m){m=document.createElement('meta');m.name=n;document.head.appendChild(m)}m.content=c};
