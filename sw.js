@@ -1,4 +1,4 @@
-const C = 'liftlog-5.0';
+const C = 'liftlog-5.1';
 self.addEventListener('install', e => {
   self.skipWaiting();
   e.waitUntil(caches.open(C).then(c => c.addAll(['./', './index.html', './icon-180.png'])));

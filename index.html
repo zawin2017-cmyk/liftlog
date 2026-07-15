@@ -307,7 +307,7 @@ function seedDB(){
   'skull':['Skullcrusher','','Triceps'],'cable-fly':['Cable Fly','','Borst',['Schouders']],'forearm-curl':['Forearm Curl','','Onderarmen'],'shrugs':['Shrugs','','Traps'],
   'tbar-row':['T-Bar Row','','Upper back',['Lats','Biceps']]
  };
- const exercises={};for(const id in E)exercises[id]={name:E[id][0],setting:E[id][1],group:E[id][2],secondary:E[id][3]||[]};
+ const exercises={};for(const id in E)exercises[id]={name:E[id][0],setting:E[id][1],group:E[id][2],secondary:E[id][3]||[],archived:false};
  const S=a=>a.map(x=>({w:x[0],r:x[1],p:x[2]||0,done:true}));
  const en=(ex,sets,note)=>({ex,sets,note:note||''});
  const sessions=[];
@@ -316,7 +316,7 @@ function seedDB(){
   {id:'posterior',name:'Posterior',grad:'post',exIds:['ham-curl','db-rdl','frontal-pd','wide-frontal-pd','sagittal-pd','inc-db-curl','db-chest-row']},
   {id:'legs',name:'Legs',grad:'legs',exIds:['calve-raise','hack-squat','lying-ham','ham-curl','abduction','leg-ext','ab-crunch']}
  ];
- return {v:5,seq:100,exercises,templates,sessions,active:null,body:[],cardio:[],flags:{}};
+ return {v:6,seq:100,exercises,templates,sessions,active:null,body:[],cardio:[],flags:{}};
 }
 function migrate(d){
  if(d.v<2){
@@ -341,9 +341,12 @@ function migrate(d){
   for(const id in (d.exercises||{}))if(!Array.isArray(d.exercises[id].secondary))d.exercises[id].secondary=[];
   if(d.exercises&&!d.exercises['tbar-row'])d.exercises['tbar-row']={name:'T-Bar Row',setting:'',group:'Upper back',secondary:['Lats','Biceps']};
  }
+ if(d.v<6){
+  for(const id in (d.exercises||{}))if(d.exercises[id].archived===undefined)d.exercises[id].archived=false;
+ }
  for(const id in (d.exercises||{}))if(!GROUPS.includes(d.exercises[id].group))d.exercises[id].group='Overig';
  d.cardio=d.cardio||[];
- d.v=5;
+ d.v=6;
  return d;
 }
 /* ============ storage ============ */
@@ -869,8 +872,9 @@ function vMore(){
  let h='<div class="eyebrow">Liftlog</div><h1>Meer</h1><div class="sub">Templates, oefeningen, lichaam en data</div><div style="height:16px"></div>';
  h+='<h2>Templates</h2><div class="card">'+db.templates.map(t=>'<div class="listrow" data-a="tplEdit" data-id="'+t.id+'"><span class="gdot '+GRADS[t.grad]+'"></span><div class="grow"><b style="font-size:14.5px">'+esc(t.name)+'</b><div class="dim" style="font-size:11.5px">'+t.exIds.length+' oefeningen</div></div><span class="dim">'+I.back.replace('M15 5l-7 7 7 7','M9 5l7 7-7 7')+'</span></div>').join('')+
   '<button class="btn ghost wide" style="margin-top:10px" data-a="tplNew">+ Nieuwe template</button></div>';
- const exs=Object.entries(db.exercises).filter(([id,e])=>!ui.exSearch||e.name.toLowerCase().includes(ui.exSearch.toLowerCase())).sort((a,b)=>a[1].name.localeCompare(b[1].name));
- h+='<h2>Oefeningen <span class="mini">'+Object.keys(db.exercises).length+'</span></h2><div class="card">'+
+ const exs=Object.entries(db.exercises).filter(([id,e])=>!e.archived&&(!ui.exSearch||e.name.toLowerCase().includes(ui.exSearch.toLowerCase()))).sort((a,b)=>a[1].name.localeCompare(b[1].name));
+ const activeExCount=Object.values(db.exercises).filter(e=>!e.archived).length;
+ h+='<h2>Oefeningen <span class="mini">'+activeExCount+'</span></h2><div class="card">'+
   '<input class="in" type="text" placeholder="Zoek oefening..." value="'+esc(ui.exSearch)+'" data-in="exsearch" style="text-align:left;padding:10px 13px;font-weight:500;margin-bottom:6px">'+
   '<div style="max-height:300px;overflow-y:auto">'+exs.map(([id,e])=>'<div class="listrow" data-a="editEx" data-id="'+id+'"><div class="grow"><b style="font-size:13.5px">'+esc(e.name)+'</b><div class="dim" style="font-size:11px">'+esc(e.group)+(e.setting?' · '+esc(e.setting):'')+'</div></div>'+(e.setting?'<span class="setting">'+esc(e.setting)+'</span>':'')+'</div>').join('')+'</div>'+
   '<button class="btn ghost wide" style="margin-top:10px" data-a="exNew">+ Nieuwe oefening</button></div>';
@@ -886,7 +890,7 @@ function vMore(){
   '<div class="row"><button class="btn wide" data-a="exportOpen">Backup maken</button><button class="btn wide" data-a="backupImportOpen">Backup terugzetten</button></div>'+
   '<div class="dim" style="font-size:12px;margin-top:10px;line-height:1.5">Alles staat lokaal op dit toestel ('+sz+' kB). Er is geen cloud-sync: maak af en toe een backup, en gebruik de app steeds vanaf hetzelfde toestel (je beginscherm-app).</div>'+
   '<button class="btn danger wide" style="margin-top:12px" data-a="wipe">Alles wissen</button></div>';
- h+='<h2>Over</h2><div class="card"><div class="soft" style="font-size:13px;line-height:1.6">Liftlog 5.0 · gebouwd voor jouw A/P-split, gericht op hypertrofie.<br>Notatie: reps × gewicht in kg, P = partials (tellen half mee in volume).<br>Gemaakt met &lt;3 door Zawin.<br>De score per sessie vergelijkt je volume per oefening met je gemiddelde van de laatste 3 keer. PR’s zijn nieuwe records in top gewicht of sessievolume. De streak telt weken op rij met minstens één training (kracht of cardio).<br><br>Updates: vraag Claude om een aanpassing; dezelfde link op je beginscherm krijgt automatisch de nieuwe versie bij het openen.</div></div>';
+ h+='<h2>Over</h2><div class="card"><div class="soft" style="font-size:13px;line-height:1.6">Liftlog 5.1 · gebouwd voor jouw A/P-split, gericht op hypertrofie.<br>Notatie: reps × gewicht in kg, P = partials (tellen half mee in volume).<br>Gemaakt met &lt;3 door Zawin.<br>De score per sessie vergelijkt je volume per oefening met je gemiddelde van de laatste 3 keer. PR’s zijn nieuwe records in top gewicht of sessievolume. De streak telt weken op rij met minstens één training (kracht of cardio).<br><br>Updates: vraag Claude om een aanpassing; dezelfde link op je beginscherm krijgt automatisch de nieuwe versie bij het openen.</div></div>';
  return h;}
 /* ============ template edit ============ */
 function vTplEdit(){
@@ -906,7 +910,7 @@ function openPicker(ctx){
  ui.pickerCtx=ctx;ui.pickerSearch='';renderPicker();}
 function renderPicker(){
  const q=ui.pickerSearch.toLowerCase();
- const items=Object.entries(db.exercises).filter(([id,e])=>!q||e.name.toLowerCase().includes(q));
+ const items=Object.entries(db.exercises).filter(([id,e])=>!e.archived&&(!q||e.name.toLowerCase().includes(q)));
  const byGroup={};items.forEach(([id,e])=>{(byGroup[e.group]=byGroup[e.group]||[]).push([id,e])});
  let list='';GROUPS.forEach(g=>{if(!byGroup[g])return;list+='<div class="pgroup">'+g+'</div>'+
   byGroup[g].sort((a,b)=>a[1].name.localeCompare(b[1].name)).map(([id,e])=>'<button class="pitem" data-a="pickEx" data-id="'+id+'"><div class="grow" style="text-align:left"><b style="font-size:14px">'+esc(e.name)+'</b>'+(e.setting?'<span class="dim mono" style="font-size:10.5px"> · '+esc(e.setting)+'</span>':'')+'</div></button>').join('');});
@@ -924,13 +928,12 @@ function addExToCtx(exId){
  save();}
 function openExEditor(exId){
  const e=db.exercises[exId];if(!e)return;
- const used=db.sessions.some(s=>s.entries.some(en=>en.ex===exId))||db.templates.some(t=>t.exIds.includes(exId))||(db.active&&db.active.entries.some(en=>en.ex===exId));
  openModal('<div class="mtitle">Oefening</div><div class="msub">Wijzigingen worden direct bewaard</div>'+
   '<div class="field"><label>Naam</label><input type="text" value="'+esc(e.name)+'" data-in="exname" data-id="'+exId+'"></div>'+
   '<div class="field"><label>Stand / instelling (pin, stoel, hoek)</label><input type="text" value="'+esc(e.setting)+'" placeholder="bijv. Pin 19, stoel 6" data-in="exsetting" data-id="'+exId+'"></div>'+
   '<div class="field"><label>Spiergroep</label><select data-in="exgroup" data-id="'+exId+'">'+GROUPS.map(g=>'<option '+(e.group===g?'selected':'')+'>'+g+'</option>').join('')+'</select></div>'+
   '<div class="field"><label>Secundaire spiergroepen (tellen 0,5×)</label><div class="row" style="flex-wrap:wrap;gap:6px">'+GROUPS.filter(g=>g!==e.group&&g!=='Overig').map(g=>'<button class="chip click '+((e.secondary||[]).includes(g)?'sel':'')+'" type="button" data-a="toggleSecondary" data-id="'+exId+'" data-group="'+esc(g)+'">'+esc(g)+'</button>').join('')+'</div></div>'+
-  (!used?'<button class="btn danger wide" style="margin-top:14px" data-a="exDelete" data-id="'+exId+'">Verwijder oefening</button>':'')+
+  '<button class="btn danger wide" style="margin-top:14px" data-a="exDelete" data-id="'+exId+'">Verwijder oefening</button>'+
   '<button class="btn acc wide" style="margin-top:10px" data-a="exEditorDone">Klaar</button>');}
 /* ============ body & import ============ */
 function bwUpsert(d,w,kcal){
@@ -1006,14 +1009,20 @@ document.addEventListener('click',ev=>{
   case 'addExPicker':openPicker(el.dataset.ctx);break;
   case 'pickEx':addExToCtx(id);break;
   case 'pickerNew':{const name=ui.pickerSearch.trim();if(!name)break;
-   const nid=uid('x');db.exercises[nid]={name,setting:'',group:'Overig',secondary:[]};save();addExToCtx(nid);toast('Oefening aangemaakt');break;}
-  case 'exNew':{const nid=uid('x');db.exercises[nid]={name:'Nieuwe oefening',setting:'',group:'Overig',secondary:[]};save();openExEditor(nid);break;}
+   const nid=uid('x');db.exercises[nid]={name,setting:'',group:'Overig',secondary:[],archived:false};save();addExToCtx(nid);toast('Oefening aangemaakt');break;}
+  case 'exNew':{const nid=uid('x');db.exercises[nid]={name:'Nieuwe oefening',setting:'',group:'Overig',secondary:[],archived:false};save();openExEditor(nid);break;}
   case 'toggleSecondary':{const e=db.exercises[id];if(!e)break;const group=el.dataset.group;
    e.secondary=e.secondary||[];const i=e.secondary.indexOf(group);
    if(i>=0)e.secondary.splice(i,1);else e.secondary.push(group);
    save();openExEditor(id);break;}
   case 'editEx':openExEditor(id);break;
-  case 'exDelete':confirmBox('Oefening verwijderen','Deze oefening wordt definitief verwijderd.','Verwijder',()=>{delete db.exercises[id];save();closeModal();render();},true);break;
+  case 'exDelete':{const usedInSessions=db.sessions.some(s=>s.entries.some(en=>en.ex===id))||(db.active&&db.active.entries.some(en=>en.ex===id));
+   if(usedInSessions){const n=db.sessions.filter(s=>s.entries.some(en=>en.ex===id)).length;
+    confirmBox('Oefening verwijderen','Deze oefening staat in '+n+' eerdere workout'+(n===1?'':'s')+'. Hij verdwijnt uit de bibliotheek en toekomstige workouts; je historie blijft gewoon zichtbaar.','Verwijder',()=>{
+     db.templates.forEach(t=>{t.exIds=t.exIds.filter(x=>x!==id)});db.exercises[id].archived=true;save();closeModal();render();},true);}
+   else{confirmBox('Oefening verwijderen','Deze oefening wordt definitief verwijderd.','Verwijder',()=>{
+     db.templates.forEach(t=>{t.exIds=t.exIds.filter(x=>x!==id)});delete db.exercises[id];save();closeModal();render();},true);}
+   break;}
   case 'exEditorDone':closeModal();render();break;
   case 'openSession':openSessionDetail(id);break;
   case 'detailDone':closeModal();render();break;
